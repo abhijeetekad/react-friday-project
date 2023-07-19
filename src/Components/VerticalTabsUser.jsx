@@ -6,13 +6,14 @@ import Box from "@mui/material/Box";
 import { mainObj } from "../MainObj";
 import { CheckListComponent } from "./CheckListComponent";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addAdminPreviewData,
-  adminCheckedListArr,
-  adminObjStored,
-} from "../Utils.jsx/AdminSlice";
-
 import { CheckListComponentUser } from "./CheckListComponentUser";
+import {
+  addUserPreviewData,
+  userCheckedListArr,
+  userObjStored,
+} from "../Utils.jsx/UserSlice";
+
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -33,15 +34,18 @@ function TabPanel(props) {
   );
 }
 
-export default function VerticalTabs({ mainObj }) {
+const VerticalTabsUser = ({ mainObj }) => {
   const [value, setValue] = useState(0);
+  const objRedux = useSelector((data) => {
+    console.log(data)
+    return data.user.reduxObj
+  });
+  console.log(objRedux)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const objRedux = useSelector((data) => data.admin.reduxObj);
-  console.log("objRedux", objRedux);
-  // console.log("mainObj", mainObj);
+
   return (
     <Box
       sx={{
@@ -63,16 +67,16 @@ export default function VerticalTabs({ mainObj }) {
         ))}
       </Tabs>
       {objRedux.map((data) => (
-        <TabPanel value={value} index={data.verticalObj.adminTabTitle.index}>
+        <TabPanel value={value} index={data.verticalObj.userTabTitle.index}>
           <Typography variant="body9">
-            {data.verticalObj.adminTabTitle.name}
+            {data.verticalObj.userTabTitle.name}
           </Typography>
           <div className="p-1"></div>
           <Typography variant="body5">
             Capability Description here lorem ipsum
           </Typography>
 
-          <CheckListComponent
+          <CheckListComponentUser
             value={value}
             objRedux={objRedux}
             propTab={data.verticalObj}
@@ -81,4 +85,5 @@ export default function VerticalTabs({ mainObj }) {
       ))}
     </Box>
   );
-}
+};
+export { VerticalTabsUser };

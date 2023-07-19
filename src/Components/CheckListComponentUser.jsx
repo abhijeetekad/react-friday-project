@@ -3,30 +3,31 @@ import { Typography } from "@mui/material";
 import { mainObj } from "../MainObj";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addAdminPreviewData,
-  adminCheckedListArr,
-  adminObjStored,
   storeMainObj,
-  takeArrFromAdmin,
-} from "../Utils.jsx/AdminSlice";
+  userObjStored,
+  userCheckedListArr,
+  addUserPreviewData,
+  addUserAddRole,
+  takeArrFromUser,
+} from "../Utils.jsx/UserSlice";
 
-const CheckListComponent = ({ objRedux, propTab, value }) => {
+const CheckListComponentUser = ({ objRedux, propTab, value }) => {
   const dispatch = useDispatch();
 
   const roleFormData = useSelector((data) => data.admin.formData);
 
   const [childCheckboxList, setChildCheckBoxList] = useState(
-    propTab.adminTabTitle.manageArr
+    propTab.userTabTitle.manageArr
   );
   const [userChildCheckboxList, setUserChildCheckboxList] = useState(
     propTab.userTabTitle.manageArr
   );
-  dispatch(takeArrFromAdmin(childCheckboxList));
-  const dataArr = useSelector((data) => data.admin.defaultArr);
+  dispatch(takeArrFromUser(childCheckboxList));
+  const dataArr = useSelector((data) => data.user.defaultArr);
 
   useEffect(() => {
     let name;
-    roleFormData.selectVal === "Admin"
+    roleFormData.selectVal === "User"
       ? (name = "parentCheckBox")
       : (name = "");
     if (name === "parentCheckBox") {
@@ -35,14 +36,14 @@ const CheckListComponent = ({ objRedux, propTab, value }) => {
           return { ...user, isChecked: true };
         });
         setChildCheckBoxList(tempUser);
-        dispatch(takeArrFromAdmin(childCheckboxList));
+        dispatch(takeArrFromUser(childCheckboxList));
       }
     } else {
       let tempUser = childCheckboxList.map((user) =>
         user.name === name ? { ...user, isChecked: false } : user
       );
       setChildCheckBoxList(tempUser);
-      dispatch(takeArrFromAdmin(childCheckboxList));
+      dispatch(takeArrFromUser(childCheckboxList));
     }
   }, []);
   // console.log("objRedux", objRedux);
@@ -61,13 +62,13 @@ const CheckListComponent = ({ objRedux, propTab, value }) => {
         return { ...user, isChecked: checked };
       });
       setChildCheckBoxList(tempUser);
-      dispatch(takeArrFromAdmin(childCheckboxList));
+      dispatch(takeArrFromUser(childCheckboxList));
     } else {
       let tempUser = childCheckboxList.map((user) =>
         user.name === name ? { ...user, isChecked: checked } : user
       );
       setChildCheckBoxList(tempUser);
-      dispatch(takeArrFromAdmin(childCheckboxList));
+      dispatch(takeArrFromUser(childCheckboxList));
     }
   };
 
@@ -78,7 +79,7 @@ const CheckListComponent = ({ objRedux, propTab, value }) => {
     return acc;
   }, []);
 
-  dispatch(addAdminPreviewData(filteredArr));
+  dispatch(addUserPreviewData(filteredArr));
 
   function updateManageArr(originalArr, updatedArr) {
     return originalArr.map((item) => {
@@ -102,10 +103,10 @@ const CheckListComponent = ({ objRedux, propTab, value }) => {
         ...item,
         verticalObj: {
           ...item.verticalObj,
-          adminTabTitle: {
-            ...item.verticalObj.adminTabTitle,
+          userTabTitle: {
+            ...item.verticalObj.userTabTitle,
             manageArr: updateManageArr(
-              item.verticalObj.adminTabTitle.manageArr,
+              item.verticalObj.userTabTitle.manageArr,
               childCheckboxList
             ),
           },
@@ -151,4 +152,4 @@ const CheckListComponent = ({ objRedux, propTab, value }) => {
     </div>
   );
 };
-export { CheckListComponent };
+export { CheckListComponentUser };

@@ -5,9 +5,12 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import VerticalTabs from "./VerticalTabs";
-
+import { mainObj } from "../MainObj";
+import { VerticalTabsUser } from "./VerticalTabsUser";
+import { useSelector } from "react-redux";
 export default function HorizontalTabs() {
-  const [value, setValue] = useState("1");
+  const roleFormData = useSelector((data) => data.admin.formData);
+  const [value, setValue] = useState(roleFormData.selectVal);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -23,16 +26,17 @@ export default function HorizontalTabs() {
           }}
         >
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Admin Capabilities" value="1" />
-            <Tab label="Enduser Capabilities" value="2" />
-            <Tab label="Customer Capabilities" value="3" />
+            <Tab label="Admin Capabilities" value="Admin" />
+            <Tab label="Enduser Capabilities" value="User" />
           </TabList>
         </Box>
-        <TabPanel value="1">
-          <VerticalTabs />
+        <TabPanel value="Admin">
+          <VerticalTabs mainObj={mainObj} />
         </TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        <TabPanel value="User">
+          {/* <VerticalTabs mainObj={mainObj} /> */}
+          <VerticalTabsUser mainObj={mainObj} />
+        </TabPanel>
       </TabContext>
     </Box>
   );
